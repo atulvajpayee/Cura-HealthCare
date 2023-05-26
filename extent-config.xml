@@ -14,10 +14,10 @@
         <protocol>https</protocol>
 
         <!-- title of the document -->
-        <documentTitle>OrangeHRM Automation</documentTitle>
+        <documentTitle>CURA Automation</documentTitle>
 
         <!-- report name - displayed at top-nav -->
-        <reportName>OrangeHRM Regression </reportName>
+        <reportName>CuraPoc Regression </reportName>
        <!--  <theme>Dark</theme> -->
         <enableCategoryView>true</enableCategoryView>
         <enableAuthorView>true</enableAuthorView>

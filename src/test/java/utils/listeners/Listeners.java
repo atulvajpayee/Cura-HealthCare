@@ -1,22 +1,20 @@
-package util.listeners;
+package utils.listeners;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import Config.StartDriver;
+import Config.Utility;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
 
 import com.aventstack.extentreports.ExtentReports;
-import com.functions.GetDriver;
-import com.functions.StartDriver;
-import com.functions.Utility;
 
-import util.extent.ExtentInstance;
-import util.jira.JiraIntegration;
+import utils.extent.ExtentInstance;
 
 public class Listeners implements ITestListener {
 
@@ -32,7 +30,7 @@ public class Listeners implements ITestListener {
 
 		String modulename = getTestMethodGroup(result);
 		System.out.println("Test Start " + result.getMethod().getMethodName());
-		driver = GetDriver.getDriver();
+
 		/*
 		 * The following code will update the test ITestResult with the test id from the
 		 * test parameters This is to be used if the test case is making use of a data
@@ -73,28 +71,11 @@ public class Listeners implements ITestListener {
 		String description = "";
 		if (result.getMethod().getDescription() == null) {
 			description = result.getMethod().getMethodName() + " has Passed";
-		} else {
-			description = result.getMethod().getMethodName();
-			for (String temp : result.getMethod().getDescription().split(",")) {
-				// TODO Jira integration can be added here
-				if (temp.contains("TCM")) {
-					JiraIntegration.getInstance().isJiraUpdated(temp.trim(), "PASS");
-					JiraIntegration.getInstance().isAutomationStatusUpdated(temp, "PASS");
-				}
-			}
 		}
 
 		ExtentInstance.addPass(description + " passed");
 		passCount++;
-		for (String tcmId : result.getMethod().getDescription().split(",")) {
-			if (tcmId.contains("TCM")) {
-				JiraIntegration.getInstance().isJiraUpdated(tcmId, "PASS");
-				JiraIntegration.getInstance().isAutomationStatusUpdated(tcmId, "PASS");
-			} // else
-				// ExtentInstance.addFail("Invalid test case mentioned in the description " +
-				// tcmId);
 
-		}
 		listReport.flush();
 		ExtentInstance.test = null;
 
@@ -106,17 +87,6 @@ public class Listeners implements ITestListener {
 		String description = "";
 		if (result.getMethod().getDescription() == null) {
 			description = result.getMethod().getMethodName() + " has Failed";
-		} else {
-			description = result.getMethod().getMethodName();
-			for (String temp : result.getMethod().getDescription().split(",")) {
-				// TODO Jira integration can be added here
-				if (temp.contains("TCM")) {
-					JiraIntegration.getInstance().isJiraUpdated(temp.trim(), "PASS");
-					JiraIntegration.getInstance().isAutomationStatusUpdated(temp, "PASS");
-				}
-			}
-			ExtentInstance.addFail(description + " failed");
-
 		}
 		ExtentInstance.addFail(result.getThrowable().getMessage());
 		ExtentInstance.addFail(description);
@@ -135,18 +105,6 @@ public class Listeners implements ITestListener {
 		String description = "";
 		if (result.getMethod().getDescription() == null) {
 			description = result.getMethod().getMethodName() + " has Skipped";
-		} else {
-			description = result.getMethod().getMethodName();
-			for (String temp : result.getMethod().getDescription().split(",")) {
-				if (temp.contains("TCM")) {
-					if (!result.getThrowable().getMessage()
-							.contains("Can not test this on prod/preprod other than us")) {
-						JiraIntegration.getInstance().isJiraUpdated(temp.trim(), "SKIP");
-						JiraIntegration.getInstance().isAutomationStatusUpdated(temp, "SKIP");
-					}
-				}
-			}
-			ExtentInstance.addSkip(description + " skipped");
 		}
 		ExtentInstance.addSkip("The test " + result.getMethod().getMethodName() + " was skipped.");
 		if (driver != null) {

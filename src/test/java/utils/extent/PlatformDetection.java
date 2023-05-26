@@ -1,11 +1,11 @@
-package util.extent;
+package utils.extent;
 
 import java.io.File;
 import org.openqa.selenium.Platform;
 
 public class PlatformDetection {
 
-	private static org.openqa.selenium.Platform platform;
+	private static Platform platform;
 	private static String extentreportname = "Report";
 	private static String csvreportname = "CSV_Report";
 	private static String linuxlocation = System.getProperty("user.dir") + "/ExtentReports";
@@ -22,15 +22,15 @@ public class PlatformDetection {
 	private static String csvmacreport = maclocation + "/" + csvreportname;
 
 	// Get the OS type
-	public static org.openqa.selenium.Platform getOS() {
+	public static Platform getOS() {
 		if (platform == null) {
 			String os = System.getProperty("os.name").toUpperCase();
 			if (os.contains("WIN")) {
-				platform = org.openqa.selenium.Platform.WINDOWS;
+				platform = Platform.WINDOWS;
 			} else if (os.contains("MAC")) {
-				platform = org.openqa.selenium.Platform.MAC;
+				platform = Platform.MAC;
 			} else if (os.contains("NUX") || os.contains("NIX")) {
-				platform = org.openqa.selenium.Platform.LINUX;
+				platform = Platform.LINUX;
 			}
 		}
 		return platform;
